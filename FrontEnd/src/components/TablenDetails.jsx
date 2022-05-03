@@ -6,8 +6,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 // Generate Order Data
-function createData(id, name, map, lat, long, image) {
-  return { id, name, map, lat, long, image };
+function createData(id, name, description, lat, long, images) {
+  return { id, name, description, lat, long, images };
 }
 
 const rows = [
@@ -59,7 +59,7 @@ const TablenDetails = () => {
       <TableHead>
         <TableRow>
           <TableCell>Lugar</TableCell>
-          <TableCell>Ubicacion</TableCell>
+          <TableCell>Descripcion</TableCell>
           <TableCell>Latitud</TableCell>
           <TableCell>Longitud</TableCell>
           <TableCell>Fotos</TableCell>
@@ -69,10 +69,10 @@ const TablenDetails = () => {
         {rows.map((row) => (
           <TableRow key={row.id}>
             <TableCell>{row.name}</TableCell>
-            <TableCell>{row.map}</TableCell>
+            <TableCell>{row.description}</TableCell>
             <TableCell>{row.lat}</TableCell>
             <TableCell>{row.long}</TableCell>
-            <TableCell>{row.image}</TableCell>
+            <TableCell>{row.images}</TableCell>
           </TableRow>
         ))}
       </TableBody>

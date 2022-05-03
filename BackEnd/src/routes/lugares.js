@@ -1,9 +1,5 @@
 const express = require("express");
 const router = express.Router();
-<<<<<<< HEAD
-
-=======
->>>>>>> ff31818822fe80cf0f781099135b02adba7f9e66
 const {
   getLugares,
   getLugarById,

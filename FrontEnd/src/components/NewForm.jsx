@@ -23,7 +23,7 @@ const NewForm = () => {
       autoComplete="off"
     >
       <TextField id="name" label="Nombre del Lugar" variant="standard" />
-      <TextField id="map" label="Ubicacion" variant="standard" />
+      <TextField id="description" label="Descripcion" variant="standard" />
       <TextField id="Lat" label="Latitud" variant="standard" />
       <TextField id="Long" label="Longitud" variant="standard" />
       <label htmlFor="icon-button-file">

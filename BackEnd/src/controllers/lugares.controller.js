@@ -1,11 +1,6 @@
-const { Places } = require("../db/models/lugarSchema");
+const { Places } = require("../db/models/lugares.models");
 const { LugarSchema } = require("./schemas/lugar.schema");
 const Joi = require("joi");
-<<<<<<< HEAD
-const LugarSchema = require("./schemas/lugar.schema");
-const { Lugar } = require("../models/lugares.models");
-=======
->>>>>>> ff31818822fe80cf0f781099135b02adba7f9e66
 
 async function getLugares(req, res) {
   try {
