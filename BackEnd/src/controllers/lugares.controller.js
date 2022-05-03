@@ -1,94 +1,107 @@
-const axios = require("axios").default;
-const config = require("config");
-const mongoose = require("mongoose");
+const { Places } = require("../db/models/lugarSchema");
+const { LugarSchema } = require("./schemas/lugar.schema");
 const Joi = require("joi");
+<<<<<<< HEAD
 const LugarSchema = require("./schemas/lugar.schema");
 const { Lugar } = require("../models/lugares.models");
+=======
+>>>>>>> ff31818822fe80cf0f781099135b02adba7f9e66
 
 async function getLugares(req, res) {
   try {
-    const response = await Lugar.find({});
-    res.status(200).json(response);
-  } catch (err) {
-    const error = new Error();
-    Object.assign(error, {
-      code: "BAD REQUEST",
-      message: err.details[0].message,
-      severity: "LOW",
+    const lugares = await Places.find();
+    return res.status(200).json(lugares);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      code: 500,
+      message: "Internal server issue ocurred",
     });
-    res.status(400).json(error);
   }
 }
-async function getLugar(req, res) {
+
+async function getLugarById(req, res) {
+  const lugar = await Places.findById(req.params.id);
   try {
-    const id = mongoose.Types.ObjectId(req.params);
-    const response = await Lugar.findById(id);
-    res.status(200).json(response);
-  } catch (err) {
-    console.error(err);
-    const error = new Error();
-    Object.assign(error, {
-      code: "BAD REQUEST",
-      message: err.details[0].message,
-      severity: "LOW",
+    return res.status(200).json(lugar);
+  } catch (e) {
+    return res.status(500).json({
+      code: 500,
+      message: "Internal server issue occurred",
     });
-    res.status(400).json(error);
   }
 }
-async function createLugar(req, res) {
-  const data = req.body;
+
+async function createNewLugar(req, res) {
+  const bodyData = {
+    name: req.body.name,
+    description: req.body.description,
+    lat: req.body.lat,
+    long: req.body.long,
+    images: req.body.images,
+  };
   try {
-    Joi.assert(data, LugarSchema);
-    const lugar = new Lugar(data);
-    const response = await lugar.save();
-    res.status(200).json(response);
-  } catch (err) {
-    const error = new Error();
-    Object.assign(error, {
-      code: "BAD REQUEST",
-      message: err.details[0].message,
-      severity: "LOW",
+    Joi.assert(bodyData, LugarSchema);
+    const newLugar = new Lugar({
+      name: bodyData.name,
+      description: bodyData.description,
+      lat: bodyData.lat,
+      long: bodyData.long,
+      images: bodyData.images,
     });
-    res.status(400).json(error);
+    await newLugar.save();
+    return res.status(201).json({ mensaje: "New place created correctly" });
+  } catch (e) {
+    res.status(400).json({
+      code: "bad_request",
+      message: "Bad request. Please check sent values",
+    });
   }
 }
-async function editLugar(req, res) {
-  const id = mongoose.Types.ObjectId(req.params);
-  const data = req.body;
-  try {
-    Joi.assert(data, LugarSchema);
-    const response = await Lugar.update({ id }, data);
-    res.status(200).json(response);
-  } catch (err) {
-    const error = new Error();
-    Object.assign(error, {
-      code: "BAD REQUEST",
-      message: err.details[0].message,
-      severity: "LOW",
-    });
-    res.status(400).json(error);
-  }
-}
+
 async function deleteLugar(req, res) {
-  const id = mongoose.Types.ObjectId(req.params);
   try {
-    const response = await Lugar.delete(id);
-    res.status(200).json(response);
-  } catch (err) {
-    console.error(err);
-    const error = new Error();
-    Object.assign(error, {
-      code: "BAD REQUEST",
-      message: err.details[0].message,
-      severity: "LOW",
+    await Places.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ mensaje: "Attraction deleted correctly" });
+  } catch (e) {
+    return res.status(500).json({
+      code: 500,
+      message: "Internal server issue occurred",
     });
-    res.status(400).json(error);
   }
 }
+
+async function updateLugar(req, res) {
+  const bodyData = {
+    name: req.body.name,
+    description: req.body.description,
+    lat: req.body.lat,
+    long: req.body.long,
+    images: req.body.images,
+  };
+  try {
+    Joi.assert(bodyData, LugarSchema);
+    await Places.findByIdAndUpdate(req.params.id, {
+      name: bodyData.name,
+      description: bodyData.description,
+      lat: bodyData.lat,
+      long: bodyData.long,
+      images: bodyData.images,
+    });
+
+    return res.status(200).json("place updated correctly");
+  } catch (e) {
+    res.status(400).json({
+      code: "bad_request",
+      message: "Bad request. Please check sent values",
+    });
+  }
+}
+
 module.exports = {
   getLugares,
-  getLugar,
-  createLugar,
-  editLugar,
+  getLugarById,
+  createNewLugar,
   deleteLugar,
+  updateLugar,
 };

@@ -1,6 +1,8 @@
 require("dotenv").config();
 module.exports = {
-  db: {
-    con: { conString: process.env.MONGO_URI },
+  services: {
+    database: {
+      mongo_uri: process.env.MONGODB_URI,
+    },
   },
 };
