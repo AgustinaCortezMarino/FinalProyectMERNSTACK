@@ -2,10 +2,11 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-require("dotenv").config();
 const Router = require("./src/routes/lugares");
 const app = express();
+const config = require("config");
 
+require("dotenv").config();
 const mongoose = require("mongoose");
 const mongooseConnectionString = config.get("db.con.conString");
 mongoose
