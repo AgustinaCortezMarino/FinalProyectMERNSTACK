@@ -9,4 +9,6 @@ const PlacesSchema = new Schema({
   images: { type: [] },
 });
 
-module.exports = model("Places", PlacesSchema);
+const Places = mongoose.model("Places", PlacesSchema);
+
+module.exports = Places;

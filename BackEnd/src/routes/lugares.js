@@ -9,9 +9,9 @@ const {
 } = require("../controllers/lugares.controller");
 
 //COMPLETE the router
-router.get("/lugares", getLugares);
-router.get("/lugares/:id", getLugarById);
-router.post("/lugares", createNewLugar);
-router.delete("/lugares/:id", deleteLugar);
-router.patch("/lugares/:id", updateLugar);
+router.get("/", getLugares);
+router.get("/:id", getLugarById);
+router.post("/new", createNewLugar);
+router.delete("/delete/:id", deleteLugar);
+router.patch("/edit/:id", updateLugar);
 module.exports = router;

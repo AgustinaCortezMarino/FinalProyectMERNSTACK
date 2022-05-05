@@ -1,4 +1,4 @@
-const { Places } = require("../db/models/lugarSchema");
+const { Places } = require("../db/models/lugares.models");
 const { LugarSchema } = require("./schemas/lugar.schema");
 const Joi = require("joi");
 
@@ -16,15 +16,9 @@ async function getLugares(req, res) {
 }
 
 async function getLugarById(req, res) {
-  const lugar = await Places.findById(req.params.id);
-  try {
-    return res.status(200).json(lugar);
-  } catch (e) {
-    return res.status(500).json({
-      code: 500,
-      message: "Internal server issue occurred",
-    });
-  }
+  Places.findById(req.params.id)
+    .then((lugar) => res.status(200).json(lugar))
+    .catch((err) => res.status(500).json("Error: " + err));
 }
 
 async function createNewLugar(req, res) {
