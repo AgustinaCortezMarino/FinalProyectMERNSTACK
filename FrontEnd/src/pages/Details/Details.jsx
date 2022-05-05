@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import TablenDetails from "../../components/TablenDetails";
-import { setTitle } from "../../redux/appRedux";
+import { setLugar } from "../../redux/appRedux";
 import { Fab } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,7 +13,7 @@ const Details = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setTitle("Details"));
+    dispatch(setLugar("Details"));
   });
 
   return (
@@ -34,12 +34,12 @@ const Details = () => {
             </Fab>
           </Grid>
           <Grid item xs={2}>
-            <Fab color="secondary" aria-label="edit">
+            <Fab color="secondary" aria-label="edit" href="/edit/:id">
               <EditIcon />
             </Fab>
           </Grid>
           <Grid item xs={2}>
-            <Fab color="secondary" aria-label="edit">
+            <Fab color="secondary" aria-label="edit" href="/delete/:id">
               <DeleteIcon />
             </Fab>
           </Grid>

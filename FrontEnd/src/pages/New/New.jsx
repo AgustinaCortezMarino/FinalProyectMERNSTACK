@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-import { setTitle } from "../../redux/appRedux";
+import { setLugar, setTitle } from "../../redux/appRedux";
 import NewForm from "../../components/NewForm";
 import { Fab } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
@@ -12,7 +12,7 @@ const New = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setTitle("New Place"));
+    dispatch(setLugar("New Place"));
   });
 
   return (

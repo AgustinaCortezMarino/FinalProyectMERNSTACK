@@ -1,14 +1,14 @@
 import * as React from "react";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { setTitle } from "../../redux/appRedux";
+import { useEffect, useState, useCallback } from "react";
+
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import { getLugares } from "../../services/api.services";
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
@@ -73,27 +73,49 @@ const ImageMarked = styled("span")(({ theme }) => ({
   transition: theme.transitions.create("opacity"),
 }));
 
-export default function Home() {
-  const dispatch = useDispatch();
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
+export default function Home(props) {
+  const [Lugares, setLugares] = useState();
+  const [next, setNext] = useState();
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   useEffect(() => {
-    dispatch(setTitle("Home"));
-  });
+    getLugares().then((data) => {
+      setLugares(data.results);
+      setNext(data.next);
+    });
+  }, []);
+  const loadMore = () => {
+    setLoadingMore(true);
+    getLugares(next).then((data) => {});
+  };
+  // setLugares([...Lugares, ...data.results]);
+  // setNext(data.next);
+  // setLoadingMore(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    console.log("refreshing");
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+  const renderItem = (item) => {
+  //   const path = item.url.split("/");
 
   return (
     <ImageList sx={{ width: "100%", height: "100%" }}>
       <ImageListItem key="Subheader" cols={2}></ImageListItem>
-
-      {itemData.map((image) => (
+      {/* {Lugares.map((item) => ( */}
         <ImageButton
           href="/details"
           focusRipple
-          key={image.title}
+          key={item.name}
           style={{
-            width: image.width,
+            width: "100%",
           }}
         >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+          <ImageSrc style={{ backgroundImage: `url(${item.images})` }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <Image>
             <Typography
@@ -107,38 +129,38 @@ export default function Home() {
                 pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
               }}
             >
-              {image.title}
+              {item.name}
               <ImageMarked className="MuiImageMarked-root" />
             </Typography>
           </Image>
         </ImageButton>
-      ))}
+      ))
       <Fab color="secondary" aria-label="add" href="/new">
         <AddIcon />
       </Fab>
     </ImageList>
-  );
-}
+//   );
+// }
 
-const itemData = [
-  {
-    url: "https://www.elindependiente.com.ar/elindependiente/1.0/img/030886069.jpg",
-    title: "Sanagasta",
-    width: "100%",
-  },
-  {
-    url: "/static/images/buttons/burgers.jpg",
-    title: "Burgers",
-    width: "100%",
-  },
-  {
-    url: "/static/images/buttons/camera.jpg",
-    title: "Camera",
-    width: "100%",
-  },
-  {
-    url: "/static/images/buttons/camera.jpg",
-    title: "Camera",
-    width: "100%",
-  },
-];
+// const itemData = [
+//   {
+//     url: "https://www.elindependiente.com.ar/elindependiente/1.0/img/030886069.jpg",
+//     title: "Sanagasta",
+//     width: "100%",
+//   },
+//   {
+//     url: "http://descubrirturismo.com/wp-content/uploads/2018/03/Iglesia-nuestra-se%C3%B1ora-del-rosario-chuquis.jpg",
+//     title: "Chuquis",
+//     width: "100%",
+//   },
+//   {
+//     url: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0a/88/0e/20/20151202-134935-largejpg.jpg?w=1200&h=-1&s=1",
+//     title: "Famatina",
+//     width: "100%",
+//   },
+//   {
+//     url: "https://www.norte.com/img/2018/11/parque-nacional-talampaya.jpg",
+//     title: "Talampaya",
+//     width: "100%",
+//   },
+// ];
